@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
 
 from fieldbook.operators import FieldbookClient
-from fieldbook.models import UserProfile, FieldBookSheet
+from fieldbook.models import FieldBookUser
 
 
 class FieldbookException(Exception):
@@ -92,7 +92,7 @@ class FieldBookSheetMixin(ContextMixin):
         u = User.objects.get(username=self.request.user)
         up = None;
         try:
-            up = UserProfile.objects.get(user=u)
+            up = FieldBookUser.objects.get(user=u)
         except:
             pass
         return up;
