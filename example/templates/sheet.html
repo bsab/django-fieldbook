@@ -1,0 +1,27 @@
+<div class="card-content">
+    <table id="table" class="table bordered" data-form-control="datatable" style="width:100%">
+        <thead>
+        <tr>
+            {% for header, header_title in headers %}
+                <th data-name="{{ header }}" class="{{ header }}">{{ header_title|title }}</th>
+
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for item, row in data %}
+            <tr>
+                {% for column_name, item in row.items %}
+                    <td>
+                        {% if column_name in view.datalist.list_display_links %}
+                            <a href="#">{{ item }}</a>
+                        {% else %}
+                            {{ item }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
