@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
-from django.contrib import admin
 from django.views import generic
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
@@ -25,7 +24,6 @@ urlpatterns = [
     url(r'^accounts/login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^accounts/logout/$', auth_views.logout, {'template_name': 'logged_out.html'}, name='logout'),
 
-    url(r'^admin/', admin.site.urls),
     url(r'^fieldbook/', include('fieldbook.urls')),
 
 ]
