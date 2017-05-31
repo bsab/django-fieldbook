@@ -48,6 +48,8 @@ class JSONResponseMixin(object):
 class FieldBookSheetMixin(ContextMixin):
     """Mixing for fieldbook sheets views.
 
+        :keyword book_name: A string with the sheet from the book, ex 'assignments'
+        :keyword record_id: Row number to retrieve, if not positive real no row assumed, ex 1
         :keyword list_include: List of fields to include
         :keyword list_exclude: List of fields to exclude
     """
@@ -177,12 +179,16 @@ class FieldbookSheetEntryView(FieldBookSheetMixin, TemplateView):
 
     def get_sheet_entry(self):
         fb = self.get_client()
+        print "self.book_name-->", self.book_name
+        print "self.record_id-->", self.record_id
         item = fb.get_row(self.book_name,
                           self.record_id,
                           self.list_include,
                           self.list_exclude)
+        print item
         return item
 
     #@method_decorator(login_required)
     #def dispatch(self, request, *args, **kwargs):
     #    return super(FieldbookSheetEntryView, self).dispatch(request, *args, **kwargs)
+

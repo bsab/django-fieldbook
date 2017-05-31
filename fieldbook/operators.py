@@ -31,6 +31,7 @@ class FieldbookClient(object):
     def get_row(self, sheet, row_id, include_fields=None, exclude_fields=None, **kwargs):
         """Get a single row in a Fieldbook sheet"""
         url = self.get_resource_url(sheet, row_id)
+        print "url", url
 
         query_parameters = {}
 
