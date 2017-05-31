@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="center-block col-md-4" style="float: none; background-color: #FAFAFA">
+        <div class="card-content">
+            {% for key1,value1 in sheet_entry.items %}
+                <div class="section">
+                    <h3><a href="#" class="section_toggle"></a>  {{ key1|title }}:</h3>
+                    <h5><a href="#" class="section_toggle"></a>  {{ value1 }}:</h5>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -54,8 +54,8 @@ class FieldBookSheetMixin(ContextMixin):
     record_id = None
     book_name = None
     ordering = None
-    list_include = ('__str__',)
-    list_exclude = ('__str__',)
+    list_include = None
+    list_exclude = None
 
     def get_context_data(self, **kwargs):
         """Update view context"""
@@ -145,6 +145,9 @@ class FieldbookSheetListView(FieldBookSheetMixin, TemplateView):
     def get_sheets(self):
         fb = self.get_client()
         rows = fb.get_all_rows(self.book_name)
+        if 'message' in rows:
+            raise FieldbookException(status_code=404,
+                                     message=rows['message'])
         print "rows---------->", rows
         print "type---------->", type(rows)
         if not rows:

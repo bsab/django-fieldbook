@@ -3,5 +3,9 @@
 {% block title %}Sheet{% endblock %}
 
 {% block content %}
-    {%  include 'sheet.html' %}
+    {%  if page_obj %}
+        {%  include 'sheet.html' %}
+    {% else %}
+        {%  include 'sheet_entry.html' %}
+    {% endif %}
 {% endblock %}

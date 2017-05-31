@@ -13,8 +13,8 @@
             <tr>
                 {% for column_name, item in row.items %}
                     <td>
-                        {% if column_name in view.datalist.list_display_links %}
-                            <a href="#">{{ item }}</a>
+                        {% if forloop.first %}
+                                <a href="{% url 'sheet_entry' record_id=forloop.counter book_name=book_name %}">{{ item }}</a>
                         {% else %}
                             {{ item }}
                         {% endif %}

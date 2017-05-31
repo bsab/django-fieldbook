@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
-from fieldbook.views.sheet import FieldbookSheetListView, FieldbookSheetEntryView
+from fieldbook.views.sheet import FieldbookException, FieldbookSheetListView, FieldbookSheetEntryView
 
 #Returns the list of sheet names on the book.
 class SheetListView(FieldbookSheetListView):
@@ -19,12 +19,19 @@ class SheetListView(FieldbookSheetListView):
         print "SheetListView::get_context_data"
         context = super(SheetListView, self).get_context_data(**kwargs)
 
-        context.update({
-            #'datatable_config': json.dumps(self.get_datatable_config()),
-            'headers': self.get_sheet_headers() ,
-            'data': self.get_sheet_data(self.paginate_sheets()),
-            'page_obj': self.page,
-        })
+        try:
+            psheets = self.paginate_sheets();
+            context.update({
+                #'datatable_config': json.dumps(self.get_datatable_config()),
+                'headers': self.get_sheet_headers() ,
+                'data': self.get_sheet_data(psheets),
+                'page_obj': psheets,
+            })
+        except FieldbookException as fbe:
+            context.update({
+                'error': 'No such sheet!',
+            })
+
 
         return context
 
@@ -71,10 +78,10 @@ class SheetListView(FieldbookSheetListView):
         """Get a page for datatable."""
         paginator = Paginator(self.get_sheets(), self.paginate_by)
 
-        self.page = self.request.GET.get('p')
+        page = self.request.GET.get('p')
 
         try:
-            file_exams = paginator.page(self.page)
+            file_exams = paginator.page(page)
         except PageNotAnInteger:
             file_exams = paginator.page(1)
         except EmptyPage:
