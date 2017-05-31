@@ -45,3 +45,4 @@ fieldbook/static/
 fieldbook/templates/
 
 
+!/fieldbook/migrations/
