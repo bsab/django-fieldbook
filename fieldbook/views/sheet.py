@@ -1,6 +1,10 @@
+#!/usr/bin/env python
+# coding: utf-8
+import json
 import requests
 
 from django.conf import settings
+from django.http import HttpResponse
 from django.views.generic import TemplateView, View, ListView, DeleteView, DetailView
 from django.contrib.auth.models import User
 from django.views.generic.base import ContextMixin, TemplateResponseMixin
@@ -14,6 +18,31 @@ class FieldbookException(Exception):
         #override public fields
         self.status_code = status_code
         self.message = message
+
+class JSONResponseMixin(object):
+    """
+    A mixin that can be used to render a JSON response.
+    """
+    def render_to_json_response(self, context, **response_kwargs):
+        """
+        Returns a JSON response, transforming 'context' to make the payload.
+        """
+        return HttpResponse(
+            self.convert_context_to_json(context),
+            content_type='application/json',
+            **response_kwargs
+        )
+
+    def convert_context_to_json(self, context):
+        """
+        Convert the context dictionary into a JSON object.
+        """
+        try:
+            del context['view'] #to avoid no JSON serializable exception
+        except:
+            pass
+
+        return json.dumps(context)
 
 
 class FieldBookSheetMixin(ContextMixin):
@@ -114,7 +143,6 @@ class FieldbookSheetListView(FieldBookSheetMixin, TemplateView):
         return context
 
     def get_sheets(self):
-        #try:
         fb = self.get_client()
         rows = fb.get_all_rows(self.book_name)
         print "rows---------->", rows
@@ -122,9 +150,9 @@ class FieldbookSheetListView(FieldBookSheetMixin, TemplateView):
         if not rows:
             return []
         return rows
-        #except FieldbookException as fbe:
-        #    print "FieldbookException ", str(fbe.message)
-        #    return []
+
+    #def render_to_response(self, context, **response_kwargs):
+    #    return self.render_to_json_response(context)
 
     #@method_decorator(login_required)
     #def dispatch(self, request, *args, **kwargs):

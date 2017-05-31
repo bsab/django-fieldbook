@@ -18,6 +18,7 @@ from django.views import generic
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 
+from views import SheetListView, SheetEntryView
 
 urlpatterns = [
     url('^$', login_required(generic.TemplateView.as_view(template_name="index.html")), name="index"),
@@ -25,5 +26,11 @@ urlpatterns = [
     url(r'^accounts/logout/$', auth_views.logout, {'template_name': 'logged_out.html'}, name='logout'),
 
     url(r'^fieldbook/', include('fieldbook.urls')),
+
+    # list sheets
+    url(r'^sheet-list/book_name=(?P<book_name>[-\w]+)/$', SheetListView.as_view(), name='sheet_list'),
+    # single sheet by id
+    url(r'^sheet-entry-(?P<record_id>\w+)/book_name=(?P<book_name>[-\w]+)/$', SheetEntryView.as_view(),
+        name='sheet_entry'),
 
 ]

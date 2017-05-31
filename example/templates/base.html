@@ -23,14 +23,16 @@
                 <ul class="nav navbar-nav">
                     <li>
                         {% if user.is_authenticated %}
-                            <a href="{% url 'logout' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Logout</a>
+                            <a href="{% url 'logout' %}"  aria-expanded="false">Logout</a>
                         {% else %}
-                            <a href="{% url 'login' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Login</a>
+                            <a href="{% url 'login' %}"  aria-expanded="false">Login</a>
                         {% endif %}
                     </li>
+                {% if not user.is_authenticated %}
                 <li>
-                    <a href="{% url 'fieldbook_registration' %}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Register as Fieeldbook</a>
+                    <a href="{% url 'fieldbook_registration' %}" aria-expanded="false">Register as Fieeldbook</a>
                 </li>
+                {% endif %}
                 </ul>
             </div>
         </div>
