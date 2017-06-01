@@ -37,7 +37,7 @@ Quick start
            'fieldbook',
        )
 
-- Write your views with different series type (in view.py file or if you want in a nameview.py file):
+- Write your views with different types (in view.py file or if you want in a nameview.py file):
 
     * A view to get the list of sheet names on the book extending the FieldbookSheetIndexView:
 
