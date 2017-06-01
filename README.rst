@@ -62,7 +62,7 @@ Quick start
 
    * A view to get the list of records on the selected sheet extending the FieldbookSheetTableView:
 
-    ::
+   ::
 
     class SheetTableView(FieldbookSheetTableView):
         """Sheet class based view.
@@ -79,7 +79,7 @@ Quick start
 
    * A view to get a specific record in a sheet extending the FieldbookSheetEntryView:
 
-    ::
+   ::
 
     class SheetEntryView(FieldbookSheetEntryView):
         """Return or remove a specific record in a sheet.
@@ -108,9 +108,9 @@ Quick start
         def dispatch(self, request, *args, **kwargs):
             return super(SheetEntryView, self).dispatch(request, *args, **kwargs)
 
-T   *Then you need to map the views to an url in url.py file:
+   *Then you need to map the views to an url in url.py file:
 
-    ::
+   ::
 
    url('^$', IndexView.as_view(), name="index"),
     # list sheets
