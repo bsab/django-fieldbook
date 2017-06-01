@@ -1,7 +1,7 @@
 django-fieldbook
 ================
 
-django-fieldbook is a reusable Django app for interacting with the Fieldbook.com API.
+django-fieldbook is a reusable Django app for interacting with the Fieldbook_ API.
 Fieldbook is the fastest and easiest way to create custom information tools.
 It’s as easy to get started with as a spreadsheet, but gives you all the power of a
 database-driven business application. Teams use it to track projects and clients,
@@ -10,7 +10,8 @@ implement data collection workflows, and create custom content management system
 Overview
 --------
 
-Django-Fieldbook works with Django 1.8/1.9/1.10/1.11
+Django-Fieldbook works with Django 1.8/1.9/1.10/1.11.
+It is based on fieldbook-py_, a basic Python 3 client available on pypi from @mattstibbs
 
 
 Quick start
@@ -142,3 +143,7 @@ Notes
 -----------
 
 Feel free to fork and send a pull request.
+
+
+.. _Fieldbook: http://fieldbook.com
+.. _fieldbook-py: https://github.com/mattstibbs/fieldbook_py
