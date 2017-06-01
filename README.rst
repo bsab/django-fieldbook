@@ -137,3 +137,8 @@ Quick start
     url(r'^accounts/login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
     url(r'^accounts/logout/$', auth_views.logout, {'template_name': 'logged_out.html'}, name='logout'),
     url(r'^fieldbook/', include('fieldbook.urls')),
+
+Notes
+-----------
+
+Feel free to fork and send a pull request.
