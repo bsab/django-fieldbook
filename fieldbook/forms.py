@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth.forms import User
 
+
 class RegistrationForm(ModelForm):
     username = forms.CharField(required=True)
     fieldbook_book = forms.CharField(required=True, label="Fieldbook ID")

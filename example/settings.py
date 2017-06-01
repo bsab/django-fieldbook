@@ -126,6 +126,7 @@ STATIC_URL = '/static/'
 #################################################
 # you can use the API key (username) and secret (password) to write client code
 # https://github.com/fieldbook/api-docs/blob/master/reference.md
+LOGIN_REDIRECT_URL = '/'
 FIELDBOOK_BASE_URL = 'https://api.fieldbook.com/'
 FIELDBOOK_VERSION = 'v1'
 

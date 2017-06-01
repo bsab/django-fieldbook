@@ -8,17 +8,12 @@
             <h1>ERRORE</h1>
             <h1>{{ message_error }} </h1>
         </div>
-    {% elif message %}
-        <div style="text-align:center">
-            <h1>WELCOME</h1>
-            <h1>{{ message }} </h1>
-        </div>
-    {% else %}
-        {%  if page_obj %}
-            {%  include 'sheet.html' %}
-        {% else %}
-            {%  include 'sheet_entry.html' %}
-        {% endif %}
+    {% elif sheet_list %}
+        {%  include 'sheet_list.html' %}
+    {% elif sheet_table %}
+        {%  include 'sheet_table.html' %}
+    {% elif sheet_entry %}
+        {%  include 'sheet_entry.html' %}
     {% endif %}
 
 {% endblock %}

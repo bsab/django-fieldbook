@@ -18,7 +18,7 @@ from django.views import generic
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 
-from views import IndexView, SheetListView, SheetEntryView
+from views import IndexView, SheetTableView, SheetEntryView
 
 urlpatterns = [
     url(r'^accounts/login/$', auth_views.login, {'template_name': 'login.html'}, name='login'),
@@ -28,9 +28,11 @@ urlpatterns = [
 
     url('^$', IndexView.as_view(), name="index"),
     # list sheets
-    url(r'^sheet-list/sheet_name=(?P<sheet_name>[-\w]+)/$', SheetListView.as_view(), name='sheet_list'),
+    url(r'^sheet-table/sheet_name=(?P<sheet_name>[-\w]+)/$', SheetTableView.as_view(), name='sheet_table'),
     # single sheet by id
     url(r'^sheet-entry-(?P<record_id>\w+)/sheet_name=(?P<sheet_name>[-\w]+)/$', SheetEntryView.as_view(),
         name='sheet_entry'),
+    url(r'^sheet-entry-(?P<record_id>\w+)/sheet_name=(?P<sheet_name>[-\w]+)/delete/$', SheetEntryView.as_view(),
+        {'to_delete': True}, name='sheet_entry_delete'),
 
 ]

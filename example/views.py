@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
-from fieldbook.views.sheet import FieldbookSheetIndexView, FieldbookSheetListView, FieldbookSheetEntryView
+from fieldbook.views.sheet import FieldbookSheetIndexView, FieldbookSheetTableView, FieldbookSheetEntryView
 
 
 class IndexView(FieldbookSheetIndexView, TemplateView):
@@ -23,29 +23,27 @@ class IndexView(FieldbookSheetIndexView, TemplateView):
 
 
 #Returns the list of sheet names on the book.
-class SheetListView(FieldbookSheetListView):
+class SheetTableView(FieldbookSheetTableView):
     page = None
     paginate_by = 5
     template_name = "index.html"
 
     def get_context_data(self, **kwargs):
-        print "SheetListView::get_context_data"
-        context = super(SheetListView, self).get_context_data(**kwargs)
+        print "SheetTableView::get_context_data"
+        context = super(SheetTableView, self).get_context_data(**kwargs)
 
         try:
-            list_sheets_paginated = self.paginate_sheets(self.list_sheets);
+            sheet_table_paginated = self.paginate_sheets(self.sheet_table);
             context.update({
-                #'datatable_config': json.dumps(self.get_datatable_config()),
-                'headers': self.get_sheet_headers(self.list_sheets) ,
-                'data': self.get_sheet_data(list_sheets_paginated),
-                'page_obj': list_sheets_paginated,
+                'headers': self.get_sheet_headers(self.sheet_table) ,
+                'data': self.get_sheet_data(sheet_table_paginated),
+                'sheet_table_paginated': sheet_table_paginated,
             })
-        except TypeError as te: # list_sheets not is an array but a dict {'message':error-message}
-            print "TypeError-->", str(te)
-            if type(self.list_sheets) is dict:
-                if 'message' in self.list_sheets:
+        except TypeError as te: # sheet_table not is an array but a dict {'message':error-message}
+            if type(self.sheet_table) is dict:
+                if 'message' in self.sheet_table:
                     context.update({
-                        'message_error': self.list_sheets['message']
+                        'message_error': self.sheet_table['message']
                     })
                 else:
                     context.update({
@@ -62,35 +60,16 @@ class SheetListView(FieldbookSheetListView):
         print "context:", context
         return context
 
-    def get_datatable_config(self):
-        """Prepare datatable config."""
-        config = self.datatable_default_config.copy()
-        config['pageLength'] = self.paginate_by
-        config['ajax']['url'] = self.request.path
-        #config['columns'] = self.get_columns_def()
-
-        # aggiorno il context data
-        config['oLanguage']['oPaginate']['sFirst'] = "1"
-        config['oLanguage']['oPaginate']['sLast'] = "5"
-        config['oLanguage']['oPaginate']['sNext'] = "&rang;"
-        config['oLanguage']['oPaginate']['sPrevious'] = "&lang;"
-
-        if self.datatable_config is not None:
-            config.update(self.datatable_config)
-        print "config"
-        print config
-        return config
-
-    def get_sheet_headers(self, list_sheets):
+    def get_sheet_headers(self, sheet_table):
         """Readable column titles."""
-        if len(list_sheets) > 0:
-            for k in list_sheets[0].keys():
+        if len(sheet_table) > 0:
+            for k in sheet_table[0].keys():
                 yield k, k
 
-    def get_sheet_data(self, list_sheets):
+    def get_sheet_data(self, sheet_table):
         """Get a page for datatable."""
 
-        for item in list_sheets:#[start:start + length]:
+        for item in sheet_table:#[start:start + length]:
             columns = OrderedDict()
             for field_name in item.keys():
                 value = item[field_name]
@@ -99,9 +78,9 @@ class SheetListView(FieldbookSheetListView):
             print "*", item, "--", columns, "*"
             yield item, columns
 
-    def paginate_sheets(self, list_sheets):
+    def paginate_sheets(self, sheet_table):
         """Get a page for datatable."""
-        paginator = Paginator(list_sheets, self.paginate_by)
+        paginator = Paginator(sheet_table, self.paginate_by)
 
         page = self.request.GET.get('p')
 
@@ -112,19 +91,17 @@ class SheetListView(FieldbookSheetListView):
         except EmptyPage:
             file_exams = paginator.page(paginator.num_pages)
 
-        print "paginator-->", paginator
-        print "page.count-->", paginator.count
-        print "page.num_pages-->", paginator.num_pages
-
         return file_exams
 
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(SheetListView, self).dispatch(request, *args, **kwargs)
+        return super(SheetTableView, self).dispatch(request, *args, **kwargs)
 
-# Return a specific record in a sheet. OPTIONS can include include/exclude options just as list() can.
 class SheetEntryView(FieldbookSheetEntryView, TemplateView):
+    """Return a specific record in a sheet.
+    OPTIONS can include include/exclude options just as list() can.
+    """
     template_name = "index.html"
 
     def get_context_data(self, **kwargs):
@@ -135,3 +112,27 @@ class SheetEntryView(FieldbookSheetEntryView, TemplateView):
     def dispatch(self, request, *args, **kwargs):
         return super(SheetEntryView, self).dispatch(request, *args, **kwargs)
 
+
+class SheetEntryView(FieldbookSheetEntryView, TemplateView):
+    """Remove a specific record in a sheet.
+    """
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(SheetEntryView, self).get_context_data(**kwargs)
+
+        entry_to_delete = kwargs.get("to_delete", False)
+        print "SheetEntryView::entry_to_delete", entry_to_delete
+        if entry_to_delete:
+            context.update({
+                'sheet_entry': self.remove_sheet_entry(self.sheet_name, self.record_id),
+            })
+        else:
+            context.update({
+                'sheet_entry': self.get_sheet_entry(self.sheet_name, self.record_id),
+            })
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(SheetEntryView, self).dispatch(request, *args, **kwargs)

@@ -1,7 +1,8 @@
 <div class="card-content">
-    <table id="table" class="table bordered" data-form-control="datatable" style="width:100%">
+    <table id="table" class="table bordered" data-form-control="datatable">
         <thead>
         <tr>
+            <th data-name="DEL" class="del"></th>
             {% for header, header_title in headers %}
                 <th data-name="{{ header }}" class="{{ header }}">{{ header_title|title }}</th>
 
@@ -11,6 +12,7 @@
         <tbody>
         {% for item, row in data %}
             <tr>
+                <td><a href="{% url 'sheet_entry_delete' record_id=forloop.counter sheet_name=sheet_name %}" type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a></td>
                 {% for column_name, item in row.items %}
                     <td>
                         {% if forloop.first %}
@@ -26,16 +28,17 @@
     </table>
 
     <div class="pagination">
-        {{  page_obj }}
+        <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add</button>
+
         <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="{% url 'sheet_list' sheet_name=sheet_name %}?p={{ page_obj.previous_page_number }}">previous</a>
+                {% if sheet_table_paginated.has_previous %}
+                    <a href="{% url 'sheet_table' sheet_name=sheet_name %}?p={{ sheet_table_paginated.previous_page_number }}">previous</a>
                 {% endif %}
             <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    Page {{ sheet_table_paginated.number }} of {{ sheet_table_paginated.paginator.num_pages }}.
                 </span>
-            {% if page_obj.has_next %}
-                <a href="{% url 'sheet_list' sheet_name=sheet_name %}?p={{ page_obj.next_page_number }}">next</a>
+            {% if sheet_table_paginated.has_next %}
+                <a href="{% url 'sheet_table' sheet_name=sheet_name %}?p={{ sheet_table_paginated.next_page_number }}">next</a>
             {% endif %}
             </span>
     </div>

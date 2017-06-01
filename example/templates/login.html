@@ -3,10 +3,13 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-  <h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p|default:"col s12 m8 offset-m2 l8 offset-l2" }}
-    <button type="submit">Login</button>
-  </form>
+    <div class="container-fluid" style="text-align: center">
+
+        <h2>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p|default:"col s12 m8 offset-m2 l8 offset-l2" }}
+            <button type="submit">Login</button>
+        </form>
+    </div>
 {% endblock %}
