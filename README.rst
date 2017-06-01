@@ -108,7 +108,7 @@ Quick start
         def dispatch(self, request, *args, **kwargs):
             return super(SheetEntryView, self).dispatch(request, *args, **kwargs)
 
-   *Then you need to map the views to an url in url.py file:
+   * Then you need to map the views to an url in url.py file:
 
    ::
 
