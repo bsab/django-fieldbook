@@ -20,19 +20,33 @@ class SheetListView(FieldbookSheetListView):
         context = super(SheetListView, self).get_context_data(**kwargs)
 
         try:
-            psheets = self.paginate_sheets();
+            list_sheets_paginated = self.paginate_sheets(self.list_sheets);
             context.update({
                 #'datatable_config': json.dumps(self.get_datatable_config()),
-                'headers': self.get_sheet_headers() ,
-                'data': self.get_sheet_data(psheets),
-                'page_obj': psheets,
+                'headers': self.get_sheet_headers(self.list_sheets) ,
+                'data': self.get_sheet_data(list_sheets_paginated),
+                'page_obj': list_sheets_paginated,
             })
-        except FieldbookException as fbe:
-            context.update({
-                'error': 'No such sheet!',
-            })
-
-
+        except TypeError as te: # list_sheets not is an array but a dict {'message':error-message}
+            print "TypeError-->", str(te)
+            if type(self.list_sheets) is dict:
+                if 'message' in self.list_sheets:
+                    context.update({
+                        'message_error': self.list_sheets['message']
+                    })
+                else:
+                    context.update({
+                        'message_error': str(te)
+                    })
+            else:
+                context.update({
+                    'message_error': str(te),
+                })
+        except Exception as e:  # generic exception
+                context.update({
+                    'message_error': str(e),
+                })
+        print "context:", context
         return context
 
     def get_datatable_config(self):
@@ -54,17 +68,16 @@ class SheetListView(FieldbookSheetListView):
         print config
         return config
 
-    def get_sheet_headers(self):
+    def get_sheet_headers(self, list_sheets):
         """Readable column titles."""
-        hdr = self.get_sheets()
-        if len(hdr) > 0:
-            for k in hdr[0].keys():
+        if len(list_sheets) > 0:
+            for k in list_sheets[0].keys():
                 yield k, k
 
-    def get_sheet_data(self, sheets_list):
+    def get_sheet_data(self, list_sheets):
         """Get a page for datatable."""
 
-        for item in sheets_list:#[start:start + length]:
+        for item in list_sheets:#[start:start + length]:
             columns = OrderedDict()
             for field_name in item.keys():
                 value = item[field_name]
@@ -73,10 +86,9 @@ class SheetListView(FieldbookSheetListView):
             print "*", item, "--", columns, "*"
             yield item, columns
 
-
-    def paginate_sheets(self):
+    def paginate_sheets(self, list_sheets):
         """Get a page for datatable."""
-        paginator = Paginator(self.get_sheets(), self.paginate_by)
+        paginator = Paginator(list_sheets, self.paginate_by)
 
         page = self.request.GET.get('p')
 

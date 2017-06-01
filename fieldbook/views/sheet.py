@@ -136,22 +136,20 @@ class FieldbookSheetListView(FieldBookSheetMixin, TemplateView):
        The view responsive for handling GET/POST requests from the browser
        and AJAX from the datatable.
     """
+    list_sheets=None
 
     def get_context_data(self, **kwargs):
+        self.list_sheets = self.get_sheets();
+
         context = super(FieldbookSheetListView, self).get_context_data(**kwargs)
         context.update({
-            'list_sheets': self.get_sheets(),
+            'list_sheets': self.list_sheets,
         })
         return context
 
     def get_sheets(self):
         fb = self.get_client()
         rows = fb.get_all_rows(self.book_name)
-        if 'message' in rows:
-            raise FieldbookException(status_code=404,
-                                     message=rows['message'])
-        print "rows---------->", rows
-        print "type---------->", type(rows)
         if not rows:
             return []
         return rows

@@ -3,9 +3,18 @@
 {% block title %}Sheet{% endblock %}
 
 {% block content %}
-    {%  if page_obj %}
-        {%  include 'sheet.html' %}
+    <h1>{{ book_name }} </h1>
+    {% if message_error %}
+        <div style="text-align:center">
+            <h1>ERRORE</h1>
+            <h1>{{ message_error }} </h1>
+        </div>
     {% else %}
-        {%  include 'sheet_entry.html' %}
+        {%  if page_obj %}
+            {%  include 'sheet.html' %}
+        {% else %}
+            {%  include 'sheet_entry.html' %}
+        {% endif %}
     {% endif %}
+
 {% endblock %}
