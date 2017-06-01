@@ -1,7 +1,8 @@
 django-fieldbook
 ================
 
-![Screenshot](django-fieldbook/logo.jpg)
+
+![myimage-alt-tag](https://github.com/bsab/django-fieldbook/blob/master/logo.jpg?raw=true)
 
 Overview
 --------
