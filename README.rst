@@ -1,7 +1,7 @@
 django-fieldbook
 ================
 
-![Screenshot](logo.jpg)
+![Screenshot](django-fieldbook/logo.jpg)
 
 Overview
 --------
