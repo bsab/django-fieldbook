@@ -112,7 +112,7 @@ Quick start
 
    ::
 
-   url('^$', IndexView.as_view(), name="index"),
+    url('^$', IndexView.as_view(), name="index"),
     # list sheets
     url(r'^sheet-table/sheet_name=(?P<sheet_name>[-\w]+)/$', SheetTableView.as_view(), name='sheet_table'),
     # single sheet by id
