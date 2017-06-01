@@ -8,7 +8,7 @@ django-fieldbook
 Overview
 --------
 
-django-fieldbook is a simple Django app for interacting with the Fieldbook.com API.
+django-fieldbook is a reusable Django app for interacting with the Fieldbook.com API.
 
 Requirements
 ------------
