@@ -1,7 +1,7 @@
 django-fieldbook
 ================
 
-`online demo <https://www.google.it>`__
+![Screenshot](logo.jpg)
 
 Overview
 --------
