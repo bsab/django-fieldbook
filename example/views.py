@@ -11,6 +11,11 @@ from fieldbook.views.sheet import FieldbookSheetIndexView, FieldbookSheetTableVi
 
 
 class IndexView(FieldbookSheetIndexView, TemplateView):
+    """Index class based view.
+
+    Return the list of sheets associated with the book and render it
+    into a bootstrap list-group.
+    """
     template_name = "index.html"
 
     def get_context_data(self, **kwargs):
@@ -24,12 +29,20 @@ class IndexView(FieldbookSheetIndexView, TemplateView):
 
 #Returns the list of sheet names on the book.
 class SheetTableView(FieldbookSheetTableView):
-    page = None
+    """Sheet class based view.
+
+    Returns the array of records (object) for the sheet and render it
+    into a jquery datatable.
+    """
     paginate_by = 5
     template_name = "index.html"
 
     def get_context_data(self, **kwargs):
-        print "SheetTableView::get_context_data"
+        """Update view context.
+
+        Include `sheet_table_paginated`, 'headers' and initial `data` to
+        first page render.
+        """
         context = super(SheetTableView, self).get_context_data(**kwargs)
 
         try:
@@ -39,7 +52,7 @@ class SheetTableView(FieldbookSheetTableView):
                 'data': self.get_sheet_data(sheet_table_paginated),
                 'sheet_table_paginated': sheet_table_paginated,
             })
-        except TypeError as te: # sheet_table not is an array but a dict {'message':error-message}
+        except TypeError as te: # sheet_table is not an array but a dict {'message':error-message}
             if type(self.sheet_table) is dict:
                 if 'message' in self.sheet_table:
                     context.update({
@@ -57,7 +70,6 @@ class SheetTableView(FieldbookSheetTableView):
                 context.update({
                     'message_error': str(e),
                 })
-        print "context:", context
         return context
 
     def get_sheet_headers(self, sheet_table):
@@ -68,14 +80,12 @@ class SheetTableView(FieldbookSheetTableView):
 
     def get_sheet_data(self, sheet_table):
         """Get a page for datatable."""
-
-        for item in sheet_table:#[start:start + length]:
+        for item in sheet_table:
             columns = OrderedDict()
             for field_name in item.keys():
                 value = item[field_name]
                 columns[field_name] = value
-
-            print "*", item, "--", columns, "*"
+            #print "*", item, "--", columns, "*"
             yield item, columns
 
     def paginate_sheets(self, sheet_table):
@@ -85,44 +95,31 @@ class SheetTableView(FieldbookSheetTableView):
         page = self.request.GET.get('p')
 
         try:
-            file_exams = paginator.page(page)
+            paginated_sheet_table = paginator.page(page)
         except PageNotAnInteger:
-            file_exams = paginator.page(1)
+            paginated_sheet_table = paginator.page(1)
         except EmptyPage:
-            file_exams = paginator.page(paginator.num_pages)
+            paginated_sheet_table = paginator.page(paginator.num_pages)
 
-        return file_exams
-
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(SheetTableView, self).dispatch(request, *args, **kwargs)
-
-class SheetEntryView(FieldbookSheetEntryView, TemplateView):
-    """Return a specific record in a sheet.
-    OPTIONS can include include/exclude options just as list() can.
-    """
-    template_name = "index.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(SheetEntryView, self).get_context_data(**kwargs)
-        return context
+        return paginated_sheet_table
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(SheetEntryView, self).dispatch(request, *args, **kwargs)
 
-
 class SheetEntryView(FieldbookSheetEntryView, TemplateView):
-    """Remove a specific record in a sheet.
+    """Return or remove a specific record in a sheet.
+
+    If is present the url pramater 'to_delete', the current
+    entry is removed.
     """
     template_name = "index.html"
 
     def get_context_data(self, **kwargs):
+        """Update view context."""
         context = super(SheetEntryView, self).get_context_data(**kwargs)
 
         entry_to_delete = kwargs.get("to_delete", False)
-        print "SheetEntryView::entry_to_delete", entry_to_delete
         if entry_to_delete:
             context.update({
                 'sheet_entry': self.remove_sheet_entry(self.sheet_name, self.record_id),
