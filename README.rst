@@ -11,7 +11,7 @@ Overview
 --------
 
 Django-Fieldbook works with Django 1.8/1.9/1.10/1.11.
-It is based on fieldbook-py_, a basic Python 3 client available on pypi from @mattstibbs
+It is based on fieldbook-py_, a basic Python 3 client.
 
 
 Quick start
@@ -27,6 +27,7 @@ Quick start
 -  Migrate the fieldbook app to create the user model:
 
    ::
+
         $ migrate fieldbook
 
 -  Add "fieldbook" to your INSTALLED\_APPS setting like this:
