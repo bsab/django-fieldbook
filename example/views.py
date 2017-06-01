@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
-from fieldbook.views.sheet import FieldbookSheetListView, FieldbookSheetEntryView
+from fieldbook.views.sheet import FieldbookException, FieldbookSheetListView, FieldbookSheetEntryView
 
 #Returns the list of sheet names on the book.
 class SheetListView(FieldbookSheetListView):
@@ -19,13 +19,19 @@ class SheetListView(FieldbookSheetListView):
         print "SheetListView::get_context_data"
         context = super(SheetListView, self).get_context_data(**kwargs)
 
-        sheet_list = self.paginate_sheets();
-        context.update({
-            #'datatable_config': json.dumps(self.get_datatable_config()),
-            'headers': self.get_sheet_headers() ,
-            'data': self.get_sheet_data(sheet_list),
-            'page_obj': sheet_list,
-        })
+        try:
+            psheets = self.paginate_sheets();
+            context.update({
+                #'datatable_config': json.dumps(self.get_datatable_config()),
+                'headers': self.get_sheet_headers() ,
+                'data': self.get_sheet_data(psheets),
+                'page_obj': psheets,
+            })
+        except FieldbookException as fbe:
+            context.update({
+                'error': 'No such sheet!',
+            })
+
 
         return context
 
@@ -73,13 +79,19 @@ class SheetListView(FieldbookSheetListView):
         paginator = Paginator(self.get_sheets(), self.paginate_by)
 
         page = self.request.GET.get('p')
+
         try:
-            p_sheets = paginator.page(page)
+            file_exams = paginator.page(page)
         except PageNotAnInteger:
-            p_sheets = paginator.page(1)
+            file_exams = paginator.page(1)
         except EmptyPage:
-            p_sheets = paginator.page(paginator.num_pages)
-        return p_sheets
+            file_exams = paginator.page(paginator.num_pages)
+
+        print "paginator-->", paginator
+        print "page.count-->", paginator.count
+        print "page.num_pages-->", paginator.num_pages
+
+        return file_exams
 
 
     @method_decorator(login_required)

@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}Sheet {% endblock %}
+{% block title %}Sheet{% endblock %}
 
 {% block content %}
     {%  if page_obj %}
         {%  include 'sheet.html' %}
-    {%  else %}
+    {% else %}
         {%  include 'sheet_entry.html' %}
     {% endif %}
-
 {% endblock %}
