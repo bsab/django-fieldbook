@@ -16,14 +16,21 @@
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">Django-Fieldbook</a>
+                <a class="navbar-brand" href="{% url 'index' %}">Django-Fieldbook</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Book ID: <span style="color:greenyellow"> {{ book_id }}</span></a></li>
+                </ul>
                 <form id="sheet" action="/sheet-list/" method="get" class="navbar-form navbar-left" role="search">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search a sheet" name="book_name" value="{{ book_name }}">
+                        {%  if sheet_name %}
+                            <input type="text" class="form-control" placeholder="Search a sheet" name="sheet_name" value="{{ sheet_name }}">
+                        {% else %}
+                            <input type="text" class="form-control" placeholder="Search a sheet" name="sheet_name">
+                        {% endif %}
                     </div>
                     <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                 </form>
@@ -59,8 +66,8 @@
     $( "#sheet" ).submit(function( event ) {
         event.preventDefault();
 
-        var input = $("#sheet :input[name='book_name']").val();
-        var url_mask = "{% url 'sheet_list' book_name=12345 %}".replace(/12345/, input);
+        var input = $("#sheet :input[name='sheet_name']").val();
+        var url_mask = "{% url 'sheet_list' sheet_name=12345 %}".replace(/12345/, input);
         location.href = url_mask;
 
     });

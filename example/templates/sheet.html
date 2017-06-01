@@ -14,7 +14,7 @@
                 {% for column_name, item in row.items %}
                     <td>
                         {% if forloop.first %}
-                            <a href="{% url 'sheet_entry' record_id=forloop.parentloop.counter book_name=book_name %}">{{ item }}</a>
+                            <a href="{% url 'sheet_entry' record_id=forloop.parentloop.counter sheet_name=sheet_name %}">{{ item }}</a>
                         {% else %}
                             {{ item }}
                         {% endif %}
@@ -29,13 +29,13 @@
         {{  page_obj }}
         <span class="page-links">
                 {% if page_obj.has_previous %}
-                    <a href="{% url 'sheet_list' book_name=book_name %}?p={{ page_obj.previous_page_number }}">previous</a>
+                    <a href="{% url 'sheet_list' sheet_name=sheet_name %}?p={{ page_obj.previous_page_number }}">previous</a>
                 {% endif %}
             <span class="page-current">
                     Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                 </span>
             {% if page_obj.has_next %}
-                <a href="{% url 'sheet_list' book_name=book_name %}?p={{ page_obj.next_page_number }}">next</a>
+                <a href="{% url 'sheet_list' sheet_name=sheet_name %}?p={{ page_obj.next_page_number }}">next</a>
             {% endif %}
             </span>
     </div>

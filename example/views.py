@@ -7,7 +7,20 @@ from django.core.paginator import Paginator
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 
-from fieldbook.views.sheet import FieldbookException, FieldbookSheetListView, FieldbookSheetEntryView
+from fieldbook.views.sheet import FieldbookSheetIndexView, FieldbookSheetListView, FieldbookSheetEntryView
+
+
+class IndexView(FieldbookSheetIndexView, TemplateView):
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(IndexView, self).dispatch(request, *args, **kwargs)
+
 
 #Returns the list of sheet names on the book.
 class SheetListView(FieldbookSheetListView):
