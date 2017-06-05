@@ -41,6 +41,14 @@ Quick start
            'fieldbook',
        )
 
+- Add these variables to your settings.py:
+
+    ::
+
+        LOGIN_REDIRECT_URL = '/'
+        FIELDBOOK_BASE_URL = 'https://api.fieldbook.com/'
+        FIELDBOOK_VERSION = 'v1'
+
 - Write your views with different types (in view.py file or if you want in a nameview.py file):
 
     * A view to get the list of sheet names on the book extending the FieldbookSheetIndexView:
