@@ -7,6 +7,8 @@ It’s as easy to get started with as a spreadsheet, but gives you all the power
 database-driven business application. Teams use it to track projects and clients,
 implement data collection workflows, and create custom content management systems.
 
+Check out the live-demo_.
+
 Overview
 --------
 
@@ -146,5 +148,6 @@ Notes
 Feel free to fork and send a pull request.
 
 
+.. _live-demo:: https://django-fieldbook.herokuapp.com
 .. _Fieldbook: http://fieldbook.com
 .. _fieldbook-py: https://github.com/mattstibbs/fieldbook_py
