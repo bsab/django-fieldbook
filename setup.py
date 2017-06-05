@@ -4,13 +4,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-fieldbook',
-    version='0.0.1',
+    version='0.0.2',
     author='bsab',
     author_email='tino.saba@gmail.com',
     url='https://github.com/bsab/django-fieldbook',
     description='A simple Django app for interacting with the Fieldbook.com API.',
     long_description=open('README.rst').read(),
-    packages=find_packages(exclude=['test*', 'example*']),
+    packages=find_packages(exclude=['test*']),
     include_package_data=True,
     zip_safe=False,
     install_requires=[
