@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-fieldbook',
-    version='0.0.2',
+    version='0.0.3',
     author='bsab',
     author_email='tino.saba@gmail.com',
     url='https://github.com/bsab/django-fieldbook',
