@@ -10,7 +10,7 @@ from django.views.generic import TemplateView
 from fieldbook.views.sheet import FieldbookSheetIndexView, FieldbookSheetTableView, FieldbookSheetEntryView
 
 
-class IndexView(FieldbookSheetIndexView, TemplateView):
+class IndexView(FieldbookSheetIndexView):
     """Index class based view.
 
     Return the list of sheets associated with the book and render it
@@ -27,7 +27,6 @@ class IndexView(FieldbookSheetIndexView, TemplateView):
         return super(IndexView, self).dispatch(request, *args, **kwargs)
 
 
-#Returns the list of sheet names on the book.
 class SheetTableView(FieldbookSheetTableView):
     """Sheet class based view.
 
@@ -105,9 +104,10 @@ class SheetTableView(FieldbookSheetTableView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(SheetEntryView, self).dispatch(request, *args, **kwargs)
+        return super(SheetTableView, self).dispatch(request, *args, **kwargs)
 
-class SheetEntryView(FieldbookSheetEntryView, TemplateView):
+
+class SheetEntryView(FieldbookSheetEntryView):
     """Return or remove a specific record in a sheet.
 
     If is present the url pramater 'to_delete', the current
