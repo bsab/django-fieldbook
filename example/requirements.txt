@@ -1,3 +1,0 @@
-Django==1.11
-django-fieldbook
-fieldbook_py

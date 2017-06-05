@@ -24,3 +24,4 @@ class RegistrationForm(ModelForm):
             'fieldbook_book': forms.CharField(
                 attrs={'placeholder': 'Enter fieldbook id here'}),
         }
+

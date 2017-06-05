@@ -1,5 +1,0 @@
-{
-  "name": "Django-Fieldbook-Demo",
-  "description": "Django-Fieldbook-Demo is a lightweight app that show how Django interacts with the Fieldbook.com API.",
-  "keywords": ["python", "django", "fieldbook"]
-}

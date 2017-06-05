@@ -38,11 +38,3 @@ nosetests.xml
 
 
 .idea/
-example/db.sqlite3
-example/fieldbook/migrations/
-fieldbook/migrations/
-fieldbook/static/
-fieldbook/templates/
-
-
-!/fieldbook/migrations/
