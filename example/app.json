@@ -1,6 +1,5 @@
 {
   "name": "Django-Fieldbook-Demo",
   "description": "Django-Fieldbook-Demo is a lightweight app that show how Django interacts with the Fieldbook.com API.",
-  "repository": "https://github.com/bsab/django-fieldbook",
   "keywords": ["python", "django", "fieldbook"]
 }
