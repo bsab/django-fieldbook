@@ -130,5 +130,21 @@ LOGIN_REDIRECT_URL = '/'
 FIELDBOOK_BASE_URL = 'https://api.fieldbook.com/'
 FIELDBOOK_VERSION = 'v1'
 
-
-
+#################################################
+#               LOGGING CONFIGURATION            #
+#################################################
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+        },
+    },
+}
