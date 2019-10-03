@@ -16,7 +16,7 @@ setup(
     install_requires=[
         "django>=1.10",
         "django-braces==1.9.0",
-        "requests==2.7.0",
+        "requests==2.20.0",
         "fieldbook_py",
     ],
     license='MIT License',
